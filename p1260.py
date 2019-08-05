@@ -1,23 +1,36 @@
-"""
-DFS와 BFS에 대해 학습 중
-아직 풀지 못함.
-"""
+def DFS(start):
+    visited[start] = 1
+    for i in range(1, N+1):
+        if visited[i] == 0 and arr[start][i] == 1:
+            stack.append(i)
+            DFS(i)
+    return stack
 
-N, M, start = map(int, input().split())
-matrix = [[0] * (N+1) for i in range(N+1)]
-for i in range(M):
-    link = list(map(int, input().split()))
-    matrix[link[0]][link[1]] = 1
-    matrix[link[1]][link[0]] = 1
+def BFS(start):
+    visited[start] = 1
+    q = []
+    q.append(start)
+    while q:
+        start = q.pop(0)
+        if start > 0 and start < N+1:
+            for i in range(1, N+1):
+                if arr[start][i] == 1 and visited[i] == 0:
+                    q.append(i)
+                    visited[i] = 1
+                    queue.append(i)
+    return queue
 
-def dfs(start, row, foot_print):
-    foot_print += [start]
-    for search_node in range(len(row[start])):
-        if row[start][search_node] and search_node not in foot_print:
-            foot_print = dfs(search_node, row, foot_print)
-    return foot_print
+N, M, V = map(int, input().split())
+arr = [[0] * (N+1) for _ in range(N+1)]
+for _ in range(M):
+    a, b = map(int, input().split())
+    arr[a][b] = 1
+    arr[b][a] = 1
 
-"""
-dfs를 공부하기 위해 참고 사이트
-https://this-programmer.com/entry/%EB%B0%B1%EC%A4%801260%ED%8C%8C%EC%9D%B4%EC%8D%AC-DFS%EC%99%80-BFS
-"""
+stack = [V]
+visited = [0] * (N+1)
+print(*DFS(V))
+
+queue = [V]
+visited = [0] * (N+1)
+print(*BFS(V))
